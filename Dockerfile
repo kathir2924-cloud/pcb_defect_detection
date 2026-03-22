@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxext6 \
     libxrender1 \
     libgomp1 \
-    libgthread-2.0-0 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -26,28 +25,30 @@ CMD ["python", "app.py"]
 
 ---
 
-### Step 4 — Save It
+**8.** After pasting, look at line 6 — it must show:
+```
+    libgl1 \
+```
+NOT `libgl1-mesa-glx` — if you see `mesa` the old text is still there
 
-1. Click the green **"Commit changes"** button
-2. A popup appears — click **"Commit changes"** again
+**9.** Click the green **"Commit changes"** button (top right)
+
+**10.** A small popup appears — click **"Commit changes"** again
 
 ---
 
-### Step 5 — Go to Render and Redeploy
+### Then Go to Render
 
-1. Go to **render.com**
-2. Click on your **pcb-defect-detection** service
-3. Click **"Manual Deploy"** → **"Deploy latest commit"**
-4. Watch the build log
+**11.** Go to **render.com** → your service
+
+**12.** Click **"Manual Deploy"** → **"Deploy latest commit"**
+
+**13.** Watch the logs — the error line should be completely gone now
 
 ---
 
-### How to Confirm the New File is Saved
+### Quick Check Before Deploying
 
-After committing, click on **Dockerfile** in your repo again and check the first few lines. It must show:
+After saving on GitHub, click **Dockerfile** again and confirm line 7 shows exactly:
 ```
-FROM python:3.10-slim
-```
-and
-```
-libgl1 \
+    libgl1 \
