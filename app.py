@@ -5,9 +5,16 @@ import pandas as pd
 import torch
 import time
 import os
+import gc
 from pathlib import Path
 from PIL import Image
 from ultralytics import YOLO
+
+# Memory optimization for free tier
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["OPENBLAS_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+torch.set_num_threads(1)
 
 # ──────────────────────────────────────────────
 # CONFIG
@@ -66,7 +73,7 @@ def load_model():
     return _model, _device
 
 try:
-    load_model()
+    # Don't load model at startup - saves memory until first scan
     MODEL_STATUS = "Ready"
     STATUS_OK    = True
 except Exception as e:
@@ -84,18 +91,48 @@ def get_severity(conf):
 
 def draw_boxes(img_bgr, detections):
     out = img_bgr.copy()
+    img_h, img_w = out.shape[:2]
+
+    # Scale proportionally to image size — base reference 800px
+    scale      = min(img_w, img_h) / 800.0
+    font_scale = max(0.28, min(0.42, 0.36 * scale))
+    txt_thick  = 1                          # always thin — never bold
+    box_thick  = max(1, int(1.5 * scale))
+    pad_x      = max(4, int(6 * scale))
+    pad_y      = max(2, int(3 * scale))
+    font       = cv2.FONT_HERSHEY_DUPLEX   # cleaner than SIMPLEX
+
     for det in detections:
         cls  = det["defect_class"]
         conf = det["confidence"]
         x1, y1, x2, y2 = det["x1"], det["y1"], det["x2"], det["y2"]
         color = CLASS_COLORS_BGR.get(cls, (200, 200, 200))
-        cv2.rectangle(out, (x1, y1), (x2, y2), color, 3)
+
+        # Thin bounding box
+        cv2.rectangle(out, (x1, y1), (x2, y2), color, box_thick)
+
+        # Label: short name + confidence %
         label = f"{DEFECT_LABELS.get(cls, cls)}  {conf*100:.0f}%"
-        (tw, th), _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)
-        by = max(y1 - 6, th + 8)
-        cv2.rectangle(out, (x1, by - th - 8), (x1 + tw + 10, by + 2), color, -1)
-        cv2.putText(out, label, (x1 + 5, by - 2),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 0), 2, cv2.LINE_AA)
+        (tw, th), baseline = cv2.getTextSize(label, font, font_scale, txt_thick)
+        label_h = th + baseline + pad_y * 2
+
+        # Place above box; if no room, place inside top edge
+        if y1 - label_h >= 0:
+            lx1, ly1 = x1, y1 - label_h
+            lx2, ly2 = x1 + tw + pad_x * 2, y1
+            ty        = y1 - baseline - pad_y
+        else:
+            lx1, ly1 = x1, y1
+            lx2, ly2 = x1 + tw + pad_x * 2, y1 + label_h
+            ty        = y1 + th + pad_y
+
+        # Filled label background
+        cv2.rectangle(out, (lx1, ly1), (lx2, ly2), color, -1)
+
+        # Clean thin black text
+        cv2.putText(out, label, (lx1 + pad_x, ty),
+                    font, font_scale, (0, 0, 0), txt_thick, cv2.LINE_AA)
+
     return out
 
 
@@ -125,7 +162,9 @@ def run_inference(pil_img, conf_thresh, iou_thresh, img_size, tta):
                 "remedy":    REMEDIES.get(cls_name, ""),
             })
     annotated_rgb = cv2.cvtColor(draw_boxes(img_bgr, detections), cv2.COLOR_BGR2RGB)
-    return Image.fromarray(annotated_rgb), detections, elapsed_ms
+    result_img = Image.fromarray(annotated_rgb)
+    gc.collect()
+    return result_img, detections, elapsed_ms
 
 
 def build_df(detections, filename="image"):
@@ -583,9 +622,10 @@ with gr.Blocks(title="PCB Defect Detection") as demo:
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 7860))
+    port = int(os.environ.get("PORT", 10000))
     demo.launch(
         server_name="0.0.0.0",
         server_port=port,
         css=CSS,
+        show_error=True,
     )
