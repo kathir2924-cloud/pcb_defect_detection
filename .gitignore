@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+*.pt
+*.pth
+*.onnx
+*.engine
+
+# Dataset (DO NOT upload)
+dataset/
+
+
+
+# Outputs (keep only few images manually)
+results/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# System
+.DS_Store
+.env
