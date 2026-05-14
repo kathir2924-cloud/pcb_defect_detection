@@ -10,8 +10,7 @@ dataset/
 
 
 
-# Outputs (keep only few images manually)
-results/
+
 
 # Jupyter
 .ipynb_checkpoints/
