@@ -58,8 +58,8 @@ Due to size limitations, the dataset is not included.
 
  
 
-![Final Output](results/final_output/new_final.jpg)
-![Output](results/final_output/new_output.jpg)
+![Final Output](results/final output/new_final.png)
+![Output](results/final output/new_output.png)
 
   
 
@@ -74,7 +74,7 @@ Due to size limitations, the dataset is not included.
  
 
 
-![Confusion Matrix](results/confusion_matrix/matrix.png)
+![Confusion Matrix](results/confusion matrix/matrix.png)
 
 ##  Tech Stack
 
