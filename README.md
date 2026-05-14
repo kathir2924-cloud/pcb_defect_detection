@@ -1,12 +1,12 @@
-# 🔍 PCB Defect Detection using YOLOv8 (GhostConv + CBAM)
+#  PCB Defect Detection using YOLOv8 (GhostConv + CBAM)
 
-## 📌 Overview
+##  Overview
 
 This project focuses on detecting defects in Printed Circuit Boards (PCB) using a customized YOLOv8 deep learning model. The model is enhanced with Ghost Convolution and CBAM attention mechanisms to improve detection accuracy while maintaining efficiency.
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 * Custom YOLOv8 architecture:
 
@@ -24,24 +24,13 @@ This project focuses on detecting defects in Printed Circuit Boards (PCB) using 
 
 ---
 
-## 📂 Project Structure
 
-pcb_defect_detection/
-│
-├── dataset/
-├── notebooks/
-├── outputs/
-├── models/
-├── README.md
-└── requirements.txt
 
----
-
-## 📥 Dataset
+##  Dataset
 
 Due to size limitations, the dataset is not included.
 
-👉 Download Dataset: https://www.kaggle.com/datasets/akhatova/pcb-defects/data
+ Download Dataset: https://www.kaggle.com/datasets/akhatova/pcb-defects/data
 
 ### Classes:
 
@@ -54,7 +43,7 @@ Due to size limitations, the dataset is not included.
 
 ---
 
-## 🏋️ Training Details
+##  Training Details
 
 * Model: YOLOv8 (custom modified)
 * Input size: 512
@@ -63,9 +52,9 @@ Due to size limitations, the dataset is not included.
 
 ---
 
-## 📊 Results
+##  Results
 
-### 🔍 Sample Predictions
+###  Sample Predictions
 
  
 
@@ -74,20 +63,20 @@ Due to size limitations, the dataset is not included.
 
   
 
-### 📈 Training Graphs
+###  Training Graphs
 
-![Loss Graph](results/graph/loss_graph.jpg)
+![Loss Graph](results/graph/loss_graph.png)
 
-![Accuracy](results/graph/accuracy.jpg)
+![Accuracy](results/graph/accuracy.png)
 
-### 📊 Confusion Matrix
+###  Confusion Matrix
 
  
 
 
-![Confusion Matrix](results/confusion_matrix/matrix.jpg)
+![Confusion Matrix](results/confusion_matrix/matrix.png)
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * Python
 * PyTorch
@@ -99,7 +88,7 @@ Due to size limitations, the dataset is not included.
 
 ---
 
-## ▶️ How to Run
+##  How to Run
 
 ```bash
 pip install -r requirements.txt
@@ -113,7 +102,7 @@ jupyter notebook
 
 ---
 
-## 📌 Future Work
+##  Future Work
 
 * Real-time PCB inspection system
 * FPGA / Edge deployment
