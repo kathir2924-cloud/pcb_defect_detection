@@ -56,8 +56,8 @@ Due to size limitations, the dataset is not included.
 
 ###  Sample Predictions
 
-![Final Output](results/final output/new_final.png)
-![Output](results/final output/new_output.png)
+![Final Output](results/final_output/new_final.png)
+![Output](results/final_output/new_output.png)
 
 ###  Training Graphs
 
@@ -67,7 +67,7 @@ Due to size limitations, the dataset is not included.
 
 ###  Confusion Matrix
 
-![Confusion Matrix](results/confusion matrix/matrix.png)
+![Confusion Matrix](results/confusion_matrix/matrix.png)
 
 ##  Tech Stack
 
