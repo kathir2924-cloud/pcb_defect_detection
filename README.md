@@ -30,8 +30,11 @@ This project focuses on detecting defects in Printed Circuit Boards (PCB) using 
 
 Due to size limitations, the dataset is not included.
 
- Download Dataset: https://www.kaggle.com/datasets/akhatova/pcb-defects/data
-
+ Download Dataset: 
+	HRIPCB DATASET:https://www.kaggle.com/datasets/akhatova/pcb-defects/data
+	DEEPPCB DATASET:https://data.mendeley.com/datasets/vdj74sngvn/1
+	TJU-DHD DATASET:https://data.mendeley.com/datasets/fj4krvmrr5/2
+			
 ### Classes:
 
 * missing_hole
